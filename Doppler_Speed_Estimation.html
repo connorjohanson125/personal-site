@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Doppler-Based Vehicle Speed Estimation — Connor Johanson</title>
+    <meta name="description" content="Doppler-based vehicle speed estimation using microphones and a 2 kHz tone: CNN vs UKF, spectrogram processing, and results." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img, video, iframe { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Grid (text + right media) */
+      .grid { width: 100%; display: grid; grid-template-columns: 60% 40%; align-items: start; gap: 30px 40px; margin-top: 20px; }
+
+      /* Left column type */
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p{ font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets{ margin:6px 0 0 18px; padding:0; }
+      .bullets li{ list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Right media column stack */
+      .media-col{ display:flex; flex-direction:column; gap:26px; }
+      .figure{ display:flex; flex-direction:column; gap:8px; padding:14px; }
+      .fig-caption{ text-align:center; font-family:"Marmelad",sans-serif; font-size:16px; }
+      .media-img{ width:100%; border-radius:12px; }
+      .media-video{ width:100%; border-radius:12px; background:#000; }
+
+      /* Document embeds (PDF/presentation) */
+      .doc-embed {
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        background: #fff;
+        aspect-ratio: 4 / 3;
+        min-height: 420px;
+      }
+
+      /* Full-width 2×2 gallery */
+      .gallery {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+      .gallery .figure { padding: 14px; }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+        .grid{ grid-template-columns:1fr; }
+        .media-col{ order:2; }
+        .gallery{ grid-template-columns:1fr; } /* stack to single column */
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li, .fig-caption{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Doppler-Based Vehicle Speed Estimation</h1>
+        <div class="sublead">Part of MTE 546: Multi-Sensor Data Fusion - Major Project</div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="grid">
+        <!-- LEFT: TEXT (verbatim) -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              The purpose of this project was to create a low cost, scalable system that estimates the speed of a moving vehicle using only microphones and a speaker emitting a 2000Hz tone. This was to be done using the Doppler-based frequency shifts present in the audio recordings of a car passing by at constant speed. Both data-driven and model-based techniques were used and compared to find which worked best.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              The data was collected by recording audio on 5 different devices along a straight line while a car passed at constant speeds ranging from 10 - 50 km / hr. The data was then converted to mel spectrograms using Librosa (128 bins, 1024-20480Hz range).
+            </p>
+            <p class="p">
+              To build a model-based system, a <em>convolutional neural network</em> was used. The data first underwent various preprocessing such as zero-padding to equalize length, thresholding to -70db to suppress noise, and normalizing to [0,1] for a stable model input. Additionally, the first sensor was ignored due to high error. Dozens of system architectures were tested. The final architecture consisted of the following:
+            </p>
+            <ul class="bullets">
+              <li>4 convolution/ pool layers (8—16—32—64) → flatten → dense(64) → dropout(30%) → dense(1)</li>
+              <li>ReLU activation function, Adam optimizer (lr=0.001), batch size 4</li>
+              <li>Trained for 300 epochs using MSE loss and 5-fold cross validation (80/20 split)</li>
+            </ul>
+            <br>
+            <p class="p">
+              For the data-driven system, an <em>Unscented Kalman Filter</em> was used. The filter tracked the peak frequency and its rate of change. The Doppler-shifted audio was treated as a nonlinear system. The motion model was a constant acceleration model. The measurement model was the estimated peak frequency and was treated as nonlinear. The UKF parameters were tuned empirically. The sigma spread was fine tuned to optimize the filter. After the peak velocity was estimated, the Doppler formula was used to find the vehicle speed.
+            </p>
+            <p class="p">
+              The two methods were compared both in accuracy and efficiency.
+            </p>
+            <p class="p">
+              This project was done using <strong>Python, Matlab</strong>, and <strong>TensorFlow.</strong>
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Demonstrated feasibility of using a UKF estimator for Doppler based tracking</li>
+              <li>CNN model achieved <strong>&lt;2.7 km/hr average error</strong></li>
+              <li>CNN outperformed UKF in accuracy and implementation efficiency</li>
+              <li>See images for spectrograms, UKF results, and sample training curve!</li>
+              <li>View the final report and presentation attached!</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- RIGHT: PDF + first image -->
+        <aside class="media-col" aria-label="Project figures">
+            <div class="figure">
+                <div class="fig-caption">Final Report (PDF)</div>
+                <iframe class="doc-embed" src="img/Doppler_Speed_Estimation/Report.pdf" title="Doppler Final Report PDF"></iframe>
+                <p style="text-align:center; font-family:Marmelad, sans-serif; font-size:15px; text-decoration:underline;">
+                  <a href="img/Doppler_Speed_Estimation/Report.pdf" target="_blank">Open Fullscreen / Download PDF</a>
+                </p>
+            </div>
+
+          <div class="figure">
+            <div class="fig-caption">Raw Data Spectrogram</div>
+            <img class="media-img" src="img/Projects/Doppler_Data.png" alt="Raw mel spectrogram highlighting Doppler shift and engine noise" />
+          </div>
+        </aside>
+      </main>
+
+      <!-- FULL-WIDTH 2×2 GALLERY: remaining 3 images + presentation -->
+      <section class="gallery" aria-label="Additional figures and presentation">
+        <div class="figure">
+          <div class="fig-caption">Filtered Spectrogram from Each Sensor</div>
+          <img class="media-img" src="img/Doppler_Speed_Estimation/Filtered_Data.png" alt="Filtered mel spectrograms for each sensor over time" />
+        </div>
+
+        <div class="figure">
+            <div class="fig-caption">UKF Results</div>
+            <img class="media-img" src="img/Doppler_Speed_Estimation/UKF_Results.png" alt="UKF estimated vs actual velocity at 10 kph" />
+          </div>
+
+        <div class="figure">
+          <div class="fig-caption">Sample CNN Training Curve</div>
+          <img class="media-img" src="img/Doppler_Speed_Estimation/Training_Curve.png" alt="Training vs validation loss across epochs for the CNN" />
+        </div>
+
+        <div class="figure">
+            <div class="fig-caption">Final Presentation (PDF)</div>
+            <iframe class="doc-embed" src="img/Doppler_Speed_Estimation/Presentation.pdf" title="Doppler Final Presentation PDF"></iframe>
+            <p style="text-align:center; font-family:Marmelad, sans-serif; font-size:15px; text-decoration:underline;">
+              <a href="img/Doppler_Speed_Estimation/Presentation.pdf" target="_blank">Open Fullscreen / Download PDF</a>
+            </p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

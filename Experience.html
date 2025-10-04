@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Experience — Connor Johanson</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #f1e8d7;
+        --card: #ebdcc0;
+        --ink: #000;
+        --r-lg: 50px;
+        --r-md: 12px;
+        --gap: 20px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid rgba(120,120,220,1); outline-offset: 2px; }
+
+      /* Page wrapper */
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav — match latest pages */
+      .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+        margin-bottom: 0; /* remove negative margin */
+      }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* ===== Header (two rows) ===== */
+      .header { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: -20px; } /* slight lift so title/image don't drop */
+      .header-top {
+        display: flex;
+        flex-wrap: nowrap;      /* keep title + gif side by side */
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .headline {
+        flex: 1 1 auto;
+        min-width: 0;           /* allow shrinking */
+        margin: 0;
+        font-weight: 400;
+        color: var(--ink);
+        font-size: 64px;
+        line-height: 1.1;
+      }
+      .headline .span { font-size: 64px; font-weight: 400;}
+
+      .hero-icon {
+        flex: 0 0 auto;
+        width: min(180px, 25vw); /* responsive sizing */
+        height: auto;
+        object-fit: cover;
+      }
+
+      /* Row 2: full-width lead paragraph */
+      .lead {
+        display: block;
+        font-family: "Marmelad", sans-serif;
+        font-size: 20px;
+        color: var(--ink);
+        line-height: 1.45;
+        margin-top: 0;          /* header spacing handled by .header gap */
+        max-width: 100%;
+      }
+
+      /* Grid rows */
+      .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px 20px; width: 100%; }
+
+      /* Card — text (left) + logo (right) */
+      .card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        align-items: start;
+        gap: 15px;
+        padding: 20px 25px;
+        background: var(--card);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+      }
+      .card > * { min-width: 0; }
+
+      /* Left column */
+      .p { margin: 0; font-family: "Marmelad", sans-serif; font-size: 20px; line-height: 1.45; }
+      .title { display: block; font-family: "Marmelad", sans-serif; font-size: 28px; text-decoration: underline; margin-bottom: 6px; }
+      .subtitle { display: block; font-size: 18px; margin-bottom: 8px; }
+      .bullets { margin: 6px 0 0 16px; padding: 0; }
+      .bullets li { list-style: disc; margin: 4px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+      .inline-link { text-decoration: underline; }
+
+      /* Right column (logo) */
+      .badge { justify-self: end; width: 120px; }
+      .badge img { width: 100%; height: auto; object-fit: cover; }
+
+      /* Responsive tweaks */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .headline .span { font-size: 44px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px;}
+        .badge { width: 80px; }
+        .p, .bullets li { font-size: 16px; }
+        .title { font-size: 24px; }
+        .subtitle { font-size: 16px; }
+        .lead {margin-top: -30px;}
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 18px; height: auto; margin-bottom: 25px;}
+        .headline .span { font-size: 38px; }
+        .lead { font-size: 15px; margin-top: -10px;}
+        .card { border-radius: 24px; }
+        .badge { width: 70px; }
+        .p, .bullets li { font-size: 15px; }
+        .title { font-size: 20px; }
+        .subtitle { font-size: 15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER (title + gif on first row; full-width lead on second row) -->
+      <div class="header">
+        <div class="header-top">
+          <p class="headline"><span class="span">My Experience</span></p>
+          <img class="hero-icon" src="img/Experience/Experience_GIF.gif" alt="Experience icon" />
+        </div>
+        <span class="lead">
+          I’ve had the opportunity to work with some great people through high school and my co-ops at the University of Waterloo!
+          I’ve gotten to do jobs emphasizing <strong>hardware, electrical, software, data analysis,</strong> and <strong>project management</strong>. These opportunities
+          have helped me hone my critical thinking skills, collaborative ability, hands-on technical skills, and leadership.
+        <strong>Click the titles to read more!</strong>
+        </span>
+      </div>
+
+      <!-- ROW 1 -->
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Positioner_Integration.html"><span class="title">Antenna Positioner Design and Integration</span></a>
+            <span class="subtitle">UWaterloo EmRG Lab / May 2024 – Aug 2024</span>
+            <ul class="bullets">
+              <li>Independently spearheaded the full development of a motorized 3-axis antenna positioning system.</li>
+              <li>System is now actively used in the lab for high-frequency antenna characterization and experimental workflows.</li>
+              <li><strong>Hardware, Electrical, Software (Matlab), Project Management.</strong></li>
+              <li>Associated Project: <a class="inline-link" href="EmRG_Positioner.html" target="_blank" rel="noopener">EmRG Dual Axis Antenna Positioner</a>.</li>
+            </ul>
+          </div>
+          <div class="badge"><img src="img/About/University_of_Waterloo_seal.png" alt="University of Waterloo seal" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Mfg_Test_Design.html"><span class="title">Manufacturing Product and Test System Engineering Designer</span></a>
+            <span class="subtitle">Ford Motor Co / Sept 2023 – Dec 2023</span>
+            <ul class="bullets">
+              <li>Devised a validation procedure to analyze electronic control unit (ECU) manufacturing test stations.</li>
+              <li>Significantly reduced time to ensure optimal performance.</li>
+              <li>Collaborated with other engineers to troubleshoot functional hardware, RF signal, and software issues.</li>
+              <li><strong>Hardware, Electrical, Software, Project Management.</strong></li>
+            </ul>
+          </div>
+          <div class="badge"><img src="img/Experience/Ford.png" alt="Ford logo" /></div>
+        </article>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Web_Developer.html"><span class="title">Web Development and Research Support</span></a>
+            <span class="subtitle">UWaterloo VIP Lab / Jan 2023 – Apr 2023</span>
+            <ul class="bullets">
+              <li>Developed a completely automated research lab website (vip.uwaterloo.ca) with user account functionality.</li>
+              <li>Website is actively used with little upkeep required.</li>
+              <li>Assisted research with data acquisition and analysis of satellite synthetic aperture radar imagery.</li>
+              <li><strong>Software (CSS, HTML, PHP, JS), Data Analysis, Project Management.</strong></li>
+              <li>Associated Project: <a class="inline-link" href="Waterloo_VIP_Lab_Website.html" target="_blank" rel="noopener">Waterloo VIP Lab Website</a>.</li>
+            </ul>
+          </div>
+          <div class="badge"><img src="img/Experience/VIP_Lab.png" alt="VIP Lab logo" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Software_Developer.html"><span class="title">Software Developer in Test</span></a>
+            <span class="subtitle">TELUS Health / Sept 2021 – Dec 2021</span>
+            <ul class="bullets">
+              <li>Implemented over 100 test scripts using Python and Robot.</li>
+              <li>Debugged numerous existing test scripts.</li>
+              <li>Quickly learned new technologies required to become efficient and productive.</li>
+              <li><strong>Software (Docker, Python, Robot).</strong></li>
+            </ul>
+          </div>
+          <div class="badge"><img src="img/Experience/Telus_Health.png" alt="TELUS Health logo" /></div>
+        </article>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Badminton_Coach.html"><span class="title">Badminton Coach</span></a>
+            <span class="subtitle">Edison Badminton Centre / Oct 2016 – Dec 2021</span>
+            <ul class="bullets">
+              <li>Designed and implemented lesson plans that were fun, easy to follow, and effective at improving the skills of the athletes.</li>
+              <li>Collaborated with other coaches to manage classes with more than 20 students.</li>
+              <li>Acted responsibly and professionally with athletes and parents.</li>
+              <li>Displayed leadership to the students.</li>
+            </ul>
+          </div>
+          <div class="badge"><img src="img/Experience/Edison.png" alt="Badminton shuttle logo" /></div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>

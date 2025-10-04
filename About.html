@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About — Connor Johanson</title>
+    <meta name="description" content="Connor Johanson — engineer, explorer, varsity badminton athlete. Learn my story, education, athletics, and passions." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #f1e8d7;
+        --card: #ebdcc0;
+        --ink: #000000;
+        --accent: rgba(120, 120, 220, 1);
+        --r-lg: 50px;
+        --r-md: 12px;
+        --pad-x: 65px;
+        --pad-x-sm: 20px;
+        --gap-lg: 20px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { margin: 0; min-height: 100%; }
+      body { background: var(--bg); font-family: "Murecho", sans-serif; color: var(--ink); }
+      a { text-decoration: none; color: inherit; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap-lg); padding: 25px var(--pad-x); min-height: 100vh; background: var(--bg); }
+
+      /* NAV — match latest pages */
+      .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+        margin-bottom: 0;
+      }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center;
+        font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* HEADER (two rows) */
+      .header { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+      .header-top { display: flex; flex-wrap: nowrap; align-items: center; gap: 10px; width: 100%; }
+      .headline { flex: 1 1 auto; margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .text-wrapper-4 { text-decoration: underline; text-decoration-color: var(--accent); text-shadow: var(--accent) 1px 0 5px; }
+      .hero-portrait { flex: 0 0 auto; width: min(220px, 25vw); display: grid; place-items: center;}
+      .portrait-img { width: 95%; height: auto; border-radius: 12px; }
+      .lead { display: block; font-family: "Marmelad", sans-serif; font-size: 20px; line-height: 1.45; margin-top: -10px; max-width: 100%; }
+
+      /* SECTION BOX */
+      .frame-wrapper { display: flex; align-items: center; justify-content: center; width: 100%;}
+      .frame-2, .frame-4 {
+        display: flex; flex-direction: column; gap: 15px;
+        padding: 10px 25px; flex: 1 1 450px;
+        background: var(--card); border-radius: var(--r-lg);
+      }
+
+      /* Section headings — exact sizes + not bold */
+      .text-wrapper-7, .text-wrapper-8, .text-wrapper-9 {
+        font-family: "Marmelad", sans-serif;
+        font-size: 28px;
+        font-weight: 400;     /* ensure not bold */
+        color: var(--ink);
+        text-decoration: underline;
+        margin-bottom: -20px;
+      }
+
+      /* Body text — exact sizes */
+      .p {
+        font-family: "Marmelad", sans-serif;
+        font-size: 16px;
+        line-height: 1.45;
+        color: var(--ink);
+      }
+
+      /* FULL-WIDTH IMAGE */
+      .IMG-wrapper { width: 100%; padding: 10px 20px; display: flex; justify-content: center; }
+      .IMG { width: 100%; max-width: 600px; border-radius: 12px; margin: auto; }
+
+      /* TWO-COLUMN */
+      .frame-3 { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px 50px; width: 100%; }
+      .frame-5 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%; }
+      .university-of { width: 100px; height: auto; aspect-ratio: 1 / 1; margin-bottom: -20px;}
+      .febf-ea, .img { width: 100%; max-width: 600px; border-radius: 12px; margin: auto; }
+
+      /* Responsive (match Experience/Projects) */
+      @media (max-width: 900px) {
+        .desktop { padding: 25px 32px; }
+        .headline { font-size: 44px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px;}
+        .hero-portrait { max-width: 160px;}
+        .text-wrapper-7, .text-wrapper-8, .text-wrapper-9 { font-size: 24px; font-weight: 400; }
+        .p { font-size: 16px; }
+      }
+
+      @media (max-width: 640px) {
+        .desktop { padding: 25px var(--pad-x-sm); }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 {
+          font-size: 18px; height: auto; margin-bottom: 25px;
+        }
+        .headline { font-size: 38px; }
+        .lead { font-size: 15px; }
+        .frame-2, .frame-4 { border-radius: 24px; }
+        .p { font-size: 15px; }
+        .text-wrapper-7, .text-wrapper-8, .text-wrapper-9 { font-size: 20px; font-weight: 400; }
+        .hero-portrait { max-width: 150px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="desktop">
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <div class="header">
+        <div class="header-top">
+          <h1 class="headline">
+            Hi, I’m <span class="text-wrapper-4">Connor Johanson</span>
+          </h1>
+          <div class="hero-portrait">
+            <img class="portrait-img" src="img/About/Main_Portrait.png" alt="Connor portrait" />
+          </div>
+        </div>
+        <span class="lead">Engineer, explorer, and shuttle chaser — I’m always moving.</span>
+      </div>
+
+      <!-- STORY -->
+      <div class="frame-wrapper">
+        <section class="frame-2" aria-labelledby="story-title">
+          <h2 id="story-title" class="text-wrapper-7">My Story</h2>
+          <p class="p">
+            I grew up in Calgary, Alberta. With the mountains so near, I fell in love with the outdoors from a young
+            age. From skating and snowboarding to hiking, biking, and camping, I tried to spend as much time outside as
+            I could. <br /><br />I started playing soccer and badminton very young, and continued until I eventually
+            dropped soccer to pursue competitive badminton. I competed in countless local, provincial, and national
+            tournaments. Eventually, I acquired my coaching certification. Then, most of my time was spent in school,
+            training for badminton, or coaching. My weekends were spent studying or competing in tournaments.<br /><br />Around
+            the start of high school, I fell in love with cooking. I enjoyed tasting new foods from different cuisines
+            that I cooked myself. I especially enjoyed cooking with fruits and vegetables that I grew or fish I
+            caught.<br /><br />In high school I began to realize my passion for technology and problem solving. I
+            focused on STEM subjects and eventually decided to pursue engineering. I applied to various schools and
+            ended up taking <strong>Mechatronics Engineering at the University of Waterloo.</strong><br /><br />At university
+            I made numerous friends, studied hard, and joined the <strong>varsity badminton team</strong>. Other than engineering, I
+            found myself drawn to <strong>entrepreneurship, business, finance, health, and fitness</strong>. I traveled, explored, and
+            learned so much. I loved my time there.
+          </p>
+        </section>
+      </div>
+
+      <div class="IMG-wrapper">
+        <img class="IMG" src="img/About/Ski_Hill.JPG" alt="Connor outdoors" />
+      </div>
+
+      <!-- EDUCATION -->
+      <section class="frame-3" aria-labelledby="edu-title">
+        <div class="frame-4">
+          <div class="frame-5">
+            <h2 id="edu-title" class="text-wrapper-8">My Education</h2>
+            <img class="university-of" src="img/About/University_of_Waterloo_seal.png" alt="University of Waterloo seal" />
+          </div>
+          <p class="p">
+            I went to a very small private school just outside of Calgary. I focused on athletics and academics. I
+            enjoyed math, physics, computer science, and, of course, physical education. <br /><br />During high school
+            I competed in numerous math and computing contests. I received various <strong>awards and recognition</strong> for these
+            contests and for my other achievements. Some of these are listed below.<br /><strong>&bull; First Class Honour Roll (grades
+            10-12)<br />&bull; 5th in Province - 2017 Newton Contest<br />&bull; 3rd in Province - 2019 Canadian Intermediate
+            Mathematics Contest<br />&bull; 68th Nationally - 2019 Canadian Computing Challenge<br />&bull; Bronze Duke of
+            Edinburgh<br />&bull; 2019 School Leadership Award<br />&bull; 9 Mathematics Contest Zone Championships<br />&bull; School
+            Elected Schulich Leader</strong><br /><br />After high school, I went to the <strong>University of Waterloo</strong> to complete my
+          <strong>BASc in Mechatronics Engineering, Co-op</strong>. This program challenged me heavily, and I gained a wealth of
+            knowledge throughout my experience. I met some of my closest friends and lost some of the people closest to
+            me. I challenged myself to reach my new goals. I learned much more than just engineering at uWaterloo, and I
+            am forever grateful for my experience there. I continued focusing on my academics, and I was fortunate to
+            receive the following awards.<br /><strong>&bull; Graduating on the Dean’s Honours List<br />&bull; Spring 2023 Term Dean’s
+            Honours List<br />&bull; Fall 2024 Term Distinction<br />&bull; Winter 2025 Term Distinction<br />&bull; President’s Scholarship
+            2021<br />&bull; James Baleshta Special Merit Award - 2025 Mechatronics Design Symposium</strong><br /><br />In university,
+            my studies focused on all the components of Mechatronics Engineering such as <strong>control systems, robotics,
+            sensors, embedded systems, and mechanical design</strong>. I did labs and projects focused on <strong>smart technologies,
+            automation, and intelligent machines</strong>. In my final years of school, I placed special emphasis on my interests
+            which are,<br /><strong>&bull; Control Systems (including multi-variable)<br />&bull; Sensor Fusion<br />&bull; Machine Learning<br />&bull; Wearable
+            Systems<br />&bull; System Modeling<br />&bull; Business and Entrepreneurship</strong><br /><br />Some projects and labs that I
+            found especially enjoyable and beneficial to my learning are included in my Projects tab.
+          </p>
+        </div>
+        <img class="febf-ea" src="img/About/Ring.png" alt="Education collage" />
+      </section>
+
+      <!-- ATHLETICS -->
+      <section class="frame-3" aria-labelledby="ath-title">
+        <img class="img" src="img/About/About_Badminton.jpg" alt="Athletics photo" />
+        <div class="frame-4">
+          <h2 id="ath-title" class="text-wrapper-9">Athletics</h2>
+          <p class="p">
+            When I was young, I played soccer and danced. I eventually decided to quit dance and focused more on soccer.
+            Around this time, I was also introduced to badminton, which eventually became my biggest passion and focus.
+            Our soccer team won multiple city championships and local tournaments, and I even traveled to the US as part
+            of a smaller team to compete in a tournament. Although I was quite talented in soccer, I eventually quit to
+            focus more on badminton and my academics. I also found enjoyment in other sports such as volleyball,
+            basketball, and golf - each of which I played on my high school school teams. I was training for badminton
+            many hours each week, and I traveled to compete in tournaments often.<br /><br />In addition to the
+            competitive side of sport, I was drawn to its leadership opportunities and sense of community. I acquired my
+            coaching certification and began to coach younger players. I also tried to practice leadership through
+            displaying sportsmanship as much as possible. Some of the awards I was fortunate enough to receive in high
+            school are listed below.<br /><strong>&bull; 2x Alberta Schools Athletic Association (ASAA) provincial champion<br />&bull; ASAA
+            Sportsmanship Award<br />&bull; Junior and Senior Athlete of the Year<br />&bull; Representative for Team Alberta at the
+            badminton Western Canadian Team Championships<br />&bull; National-level badminton tournament silver medalist</strong><br /><br />In
+            university, I continued to play badminton, and was eventually fortunate enough to make the <strong>varsity badminton
+            team</strong>. Being a member of this team challenged my work ethic significantly. Balancing academics with varsity
+            athletics was difficult, and I often felt overwhelmed. However, I met some of my closest friends, made
+            memories I will never forget, and proved to myself that I could accomplish things I previously thought were
+            impossible. Getting to be a member of the varsity badminton team is undoubtedly one of the best experiences
+            of my entire life. Our team trained almost daily, and I pushed myself very hard to improve. We were a very
+            competitive team, and I had some of my best individual accomplishments whilst I was a member. A few of the
+            awards that I received during university, as well as some of our team accomplishments, are listed below.<br /><strong>&bull; Gold
+            Medalists at the 2024 Canadian National University Championships<br />&bull; Silver Medalists at the 2025 Canadian
+            National University Championships<br />&bull; 2x Silver Medalists at the Ontario University Athletics Badminton
+            Championships (‘24, ‘25)<br />&bull; Academic Honour Roll for Student Athletes<br />&bull; Most Improved Player - Varsity
+            Badminton<br />&bull; Rookie of the Year - Varsity Badminton<br />&bull; 1st at multiple individual local tournaments</strong><br /><br />Currently,
+            I continue to play badminton most often. I also enjoy golf, squash, and almost any sport that I get to play.
+          </p>
+        </div>
+      </section>
+
+      <!-- PASSIONS -->
+      <div class="frame-wrapper" id="passions">
+        <section class="frame-2" aria-labelledby="passions-title">
+          <h2 id="passions-title" class="text-wrapper-7">My Passions</h2>
+          <p class="p">
+            I try to practice my biggest passions as much as I can in life. I think that these are the things that bring
+            me the most joy and give me a sense of fulfillment. They are what shape me as a person today. My biggest
+            passions are:<br />&bull; Badminton<br />&bull; Health and Fitness<br />&bull; Cooking<br />&bull; Business, Entrepreneurship, and
+            Finance<br />&bull; Leadership<br />&bull; Pro Sports<br />&bull; Technology<br />&bull; Biomechanics and Human Performance<br />&bull; Problem
+            Solving<br />&bull; Personal Development
+          </p>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

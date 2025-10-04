@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nonlinear Spacecraft Navigation State Estimation — Connor Johanson</title>
+    <meta name="description" content="Project: Nonlinear Spacecraft Navigation State Estimation. Extended Kalman Filter applied to spacecraft state vector with probabilistic disturbances and high uncertainty." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      /* Page wrapper */
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0px; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Grid: text left, images right */
+      .grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        align-items: start;
+        gap: 30px 40px;
+        margin-top: 20px;
+      }
+
+      /* Left column typography */
+      .section { margin-bottom: 18px; }
+      .section-title {
+        font-family: "Marmelad", sans-serif;
+        font-size: 28px;
+        font-weight: 400;
+        text-decoration: underline;
+        margin: 0 0 6px 0;
+      }
+      .p { font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; margin: 0 0 10px 0; }
+      .bullets { margin: 6px 0 0 18px; padding: 0; }
+      .bullets li { list-style: disc; margin: 4px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+
+      /* Right column media stack */
+      .media-col { display: flex; flex-direction: column; gap: 26px; }
+      .figure { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
+      .fig-caption { text-align: center; font-family: "Marmelad", sans-serif; font-size: 16px; }
+      .media-img { width: 100%; border-radius: 12px; }
+      .media-card { background: var(--card); border-radius: var(--r-lg); }
+
+      /* Responsive tweaks */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px; }
+        .headline { font-size: 44px; }
+        .sublead { font-size: 16px; }
+        .grid { grid-template-columns: 1fr; }
+        .media-col { order: 2; }
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 18px; height: auto; margin-bottom: 25px; }
+        .headline { font-size: 38px; }
+        .sublead { font-size: 15px; }
+        .section-title { font-size: 20px; }
+        .p, .bullets li, .fig-caption { font-size: 15px; }
+        .media-card { border-radius: 24px; }
+        .media-img { border-radius: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Nonlinear Spacecraft Navigation State Estimation</h1>
+        <div class="sublead">Part of MTE 546: Multi-Sensor Data Fusion — Final Exam</div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="grid">
+        <!-- Left: Text -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              For this project, I needed to use an <em>Extended Kalman Filter to estimate a 7-state vector</em> (position, velocity, and orientation angles) of the spacecraft navigation. I was provided with the simulated noisy measurement data. The spacecraft also experienced probabilistic event-driven disturbances that created high uncertainty and non-linearity.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              To create an EKF, I first needed to linearize the nonlinear state transition and measurement models. I derived the Jacobian matrices for the motion and measurement models. In order to optimize the EKF, I built one with <em>constant noise matrices</em> and one with <em>adaptive time decaying noise matrices</em> based on the events. I manually tuned the covariance matrices of the filter by comparing its output to the desired output.
+            </p>
+            <p class="p">
+              I compared the two EKFs using Kalman gain norm, RMS error, mean error, standard deviation, and subjective visual inspection.
+            </p>
+            <p class="p">
+              All of this project was done using <strong>Matlab</strong>.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Showed that the adaptive noise model can enhance the EKF performance in this instance. It resulted in slightly better tracking and smoother estimates.</li>
+              <li>Demonstrated difficulty of estimating state with severe noise and non-linearity and learned techniques to deal with these.</li>
+              <li>See the images on the right for the EKF results compared to the actual state for the velocity and the x position.</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- Right: Images with captions -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">EKF Velocity Prediction</div>
+            <img class="media-img" src="img/Nonlinear_Spacecraft_Navigation/Velocity_Prediction.png" alt="EKF vs actual velocity prediction plot" />
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">EKF Position Prediction</div>
+            <img class="media-img" src="img/Projects/Spacecraft_State.jpg" alt="EKF vs actual position prediction plots" />
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

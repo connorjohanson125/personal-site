@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EmRG Dual Axis Antenna Positioner — Connor Johanson</title>
+    <meta name="description" content="Electronics, motor control, and software integration for a multi-axis antenna positioner: reverse-engineering, Smoothieboard control, MATLAB tooling, and lab deployment." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img, video { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Grid (text + right media) */
+      .grid { width: 100%; display: grid; grid-template-columns: 60% 40%; align-items: start; gap: 30px 40px; margin-top: 20px; }
+
+      /* Left column type */
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p{ font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets{ margin:6px 0 0 18px; padding:0; }
+      .bullets li{ list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Right media stack */
+      .media-col{ display:flex; flex-direction:column; gap:26px; }
+      .figure{ display:flex; flex-direction:column; gap:8px; padding:14px; }
+      .fig-caption{ text-align:center; font-family:"Marmelad",sans-serif; font-size:16px; }
+      .media-img{ width:100%; border-radius:12px; }
+      .media-video{ width:100%; border-radius:12px; background:#000; }
+
+      /* Bottom 2-col media row */
+      .media-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+      .media-row .figure { padding:14px; }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+        .grid{ grid-template-columns:1fr; }
+        .media-col{ order:2; }
+        .media-row{ grid-template-columns: 1fr; } /* stack images */
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li, .fig-caption{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">EmRG Dual Axis Antenna Positioner</h1>
+        <div class="sublead"><a href="Positioner_Integration.html" aria-label="University of Waterloo EmRG Lab" style="text-decoration: underline;">My Co-op Task for the University of Waterloo EmRG Lab</a></div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="grid">
+        <!-- LEFT: TEXT (verbatim) -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              For this project, I was to design and implement the electronics, motor control, and software integration for a multi-axis antenna positioner. The positioner needed to be controllable to specific positions that would be used on devices. I needed to consider interference, ventilation, vibration, Matlab compatibility, weight requirements, and centralized rotation. I was given the mechanical structure, motors, and gears to start with, but there was no access to historical files or documentation.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              I began by reverse-engineering the incomplete system to understand the intended functionality and identify missing or incompatible components. Upon going through this, I realized that the motor drives were incompatible with the selected motors. I ordered the correct motors. I also had to order a custom missing pulley and determine the supportable weight by <em>calculating loading strength using the motor torque</em>.
+            </p>
+            <p class="p">
+              Next, I worked on the control of the system. A <em>Smoothieboard</em>, which is a 3D printer controller, was used to control the motor drives and allowed for precise positioning when used in combination with the gearboxes. I did all of the electrical wiring required between <em>motors, motor drives, the Smoothieboard, and the AC/DC converter</em>. I <em>wrote Matlab functions and code to communicate with the board via Serial-over-USB</em>. I implemented offsets and correction factors to account for the gearboxes and their inherent backlash. I added a homing ability to allow for easy referencing. I also added a software-based kill switch which ensured the positioner would stop moving immediately. The software allowed the user to <em>control the device to specific azimuth and elevation angles</em>. They could also change the reference position, return to previous locations, and get the current position.
+            </p>
+            <p class="p">
+              I ensured that all rotation occurred about the <em>centralized antenna</em>. I also improved the <em>ventilation, set-up a manual re-calibration method, reduced the on panel fan vibration, added an adjustable fan, and improved the wire management</em>.
+            </p>
+            <p class="p">
+              I wrote a guide explaining the positioner, its limitations, how to use the software, and explaining common problems. It also included a full BOM.
+            </p>
+            <p class="p">
+              This project was done using <strong>Matlab</strong>.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Implemented working positioner for the lab without access to previous files or documentation.</li>
+              <li>Significantly improved upon design to meet all requests by lab members.</li>
+              <li>Final cost was <strong>$800</strong> compared to <strong>over $15,000</strong> for commercial positioners
+                <ul class="bullets">
+                  <li>Similar capabilities in weight, communication and software.</li>
+                  <li>Commercial positioners have slightly better precision.</li>
+                </ul>
+              </li>
+              <li>Achieved <strong>0.5 degree</strong> precision.</li>
+              <li>Actively used by researchers in the lab for antenna calibration and testing</li>
+              <li>See the video for the positioner in action!</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- RIGHT: Video at top + two figures -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">Positioner Demo (Video)</div>
+            <video class="media-video" autoplay muted loop playsinline controls>
+              <source src="img/EmRG_Positioner/Video.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </aside>
+      </main>
+
+      <!-- BOTTOM: two images side-by-side -->
+      <section class="media-row" aria-label="Additional figures">
+        <div class="figure">
+            <div class="fig-caption">Front View of Positioner</div>
+            <img class="media-img" src="img/Projects/Positioner.jpeg" alt="Front view of the antenna positioner" />
+          </div>
+        <div class="figure">
+          <div class="fig-caption">Close Up View</div>
+          <img class="media-img" src="img/EmRG_Positioner/Close_Up.png" alt="Close-up of components on the positioner" />
+        </div>
+        <div class="figure">
+            <div class="fig-caption">Top View of Positioner</div>
+            <img class="media-img" src="img/EmRG_Positioner/Top_View.jpeg" alt="Top view of the antenna positioner" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Adjustable Fan</div>
+          <img class="media-img" src="img/EmRG_Positioner/Fan.png" alt="Adjustable cooling fan mounted on the frame" />
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact — Connor Johanson</title>
+    <meta name="description" content="Contact Connor Johanson — resume, portfolio, email, and LinkedIn." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #f1e8d7;
+        --card: #ebdcc0;
+        --ink: #000000;
+        --accent: rgba(120, 120, 220, 1); /* used by focus */
+        --r-lg: 50px;
+        --r-md: 12px;
+        --gap: 20px;
+      }
+    
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+    
+      /* NAV — match latest pages */
+      .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+        margin-bottom: 0; /* remove negative margin */
+      }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+    
+      /* ===== Header (match About) ===== */
+      .header { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: -20px; } /* lift so title/image don't drop */
+      .header-top { display: flex; flex-wrap: nowrap; align-items: center; gap: 10px; width: 100%; }
+    
+      .headline { flex: 1 1 auto; margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+    
+      .hero-portrait { flex: 0 0 auto; width: min(160px, 25vw); display: grid; place-items: center; }
+      .portrait-img { width: 95%; height: auto; border-radius: 12px;}
+    
+      .lead { display: block; font-family: "Marmelad", sans-serif; font-size: 20px; line-height: 1.45; margin-top: -10px; max-width: 100%; }
+    
+      /* ===== Two-column (card + side image) — 65/35 split ===== */
+      .grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 65% 35%;
+        align-items: start;
+        gap: 30px 40px;
+      }
+    
+      .card {
+        background: var(--card);
+        border-radius: var(--r-lg);
+        padding: 22px 28px;
+      }
+      .card ul { margin: 0; padding-left: 20px; }
+      .card li { list-style: disc; margin: 14px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+      .inline-link { text-decoration: underline; }
+    
+      .side-photo {
+        justify-self: end;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        align-self: center;
+      }
+      .side-photo img { width: 100%; height: auto; border-radius: 12px;}
+    
+      /* ===== Big scenic image ===== */
+      .scenic-wrap { margin-top: 30px; width: 100%; }
+      .scenic { width: 100%; max-width: 1200px; border-radius: 12px; margin: auto; display: block; }
+    
+      /* Responsive tweaks — match others */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px; }
+        .headline { font-size: 44px; }
+        .navbar { margin-bottom: 0; } /* ensure no negative margin at this breakpoint */
+        .lead { margin-top: -10px; font-size: 16px; }
+        .hero-portrait { max-width: 130px; }
+        .grid { grid-template-columns: 1fr; }   /* stack */
+        .side-photo { justify-self: center; width: 100%; max-width: 480px; }
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 {
+          font-size: 18px; height: auto; margin-bottom: 25px;
+        }
+        .headline { font-size: 38px; }
+        .lead { font-size: 15px; }
+        .card { border-radius: 24px; }
+        .side-photo, .side-photo img { border-radius: 24px; }
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER (identical structure to About) -->
+      <div class="header">
+        <div class="header-top">
+          <h1 class="headline">Contact Me</h1>
+          <div class="hero-portrait">
+            <img class="portrait-img" src="img/Contact/Contact_Portrait.png" alt="Connor portrait" />
+          </div>
+        </div>
+        <span class="lead">Let’s build something together. Feel free to reach out!</span>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <section class="grid" aria-label="Contact options">
+        <!-- Left: links card -->
+        <div class="card">
+          <ul>
+            <li><a class="inline-link" href="img/Contact/Connor_Johanson_Resume.pdf" target="_blank" rel="noopener">Download My Resume! (PDF)</a></li>
+            <li><a class="inline-link" href="img/Contact/Connor_Johanson_ATS_Resume.pdf" target="_blank" rel="noopener">Download My ATS Friendly Resume! (PDF)</a></li>
+            <li><a class="inline-link" href="docs/Connor_Johanson_Portfolio.pdf" target="_blank" rel="noopener">Download My Portfolio! (PDF)</a></li>
+            <li>Location: Calgary, AB — Willing to relocate</li>
+            <li>Email: <a class="inline-link" href="mailto:connorjohanson125@gmail.com">connorjohanson125@gmail.com</a></li>
+            <li>LinkedIn: <a class="inline-link" href="https://www.linkedin.com/in/connor-johanson" target="_blank" rel="noopener">linkedin.com/in/connor-johanson</a></li>
+          </ul>
+        </div>
+
+        <!-- Right: small landscape -->
+        <div class="side-photo">
+          <img src="img/Contact/Mountains.png" alt="Mountains and forest" />
+        </div>
+      </section>
+
+      <!-- Big scenic photo -->
+      <section class="scenic-wrap" aria-label="Scenic photo">
+        <img class="scenic" src="img/Contact/Lake.png" alt="Wide lake and mountains" />
+      </section>
+    </div>
+  </body>
+</html>

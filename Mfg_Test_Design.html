@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manufacturing Product and Test System Engineering Designer — Connor Johanson</title>
+    <meta name="description" content="Ford Motor Co: validation procedure development for ECU manufacturing test stations, on-site troubleshooting, and results." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Sections */
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p { font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets { margin:6px 0 0 18px; padding:0; }
+      .bullets li { list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Manufacturing Product and Test System Engineering Designer</h1>
+        <div class="sublead">Ford Motor Co / Sept 2023 - Dec 2023</div>
+      </header>
+
+      <!-- CONTENT -->
+      <article>
+        <section class="section">
+          <h2 class="section-title">Responsibilities</h2>
+
+          <h3 class="section-title" style="text-decoration:none; font-size:22px; margin-top:8px;">Validation Procedure and On-Site Troubleshooting</h3>
+          <p class="p">
+            At Ford, I was tasked with creating a <em>validation procedure to analyze newly built electronic control unit (ECU) manufacturing test stations</em>. These stations were used to confirm that the ECUs work as expected after manufacturing. Each station, however, also needed to be tested before it could be sent to the manufacturing plants.
+          </p>
+          <p class="p">
+            To build the validation procedure, I needed to fully understand both the ECUs and the stations. <em>I studied the design documents and worked directly with the test station engineers</em> to learn exactly how each station should work. I traveled with other engineers to the test station supplier to <em>validate the existing stations and troubleshoot problems that arose relating to RF signals, functional hardware, and software.</em>
+          </p>
+          <p class="p">
+            The test stations utilized <strong>NI Teststand</strong> and <strong>LabVIEW</strong> to integrate with the instrumentation on the stations and run the tests. There were various hardware instruments such as <strong>power supplies, electronic loads, signal generators, DAQs, etc</strong>. There were also numerous communication buses used like <strong>Ethernet, CAN,</strong> and <strong>LIN</strong>. I familiarized myself with all of these technologies quickly.
+          </p>
+          <p class="p">
+            The validation procedure I built consisted of various steps involving a multimeter, a shortened test script, a verified ECU device, and on-station instrumentation. The procedure <em>tested all aspects of the station including communication buses, RF signals, hardware instrumentation, wiring, physical connector fit, loads, relays, process errors, and software, among others</em>. It included specific tests for common problems I encountered such as improper wiring into connectors or mismatched loads. I built an <strong>automated Excel sheet</strong> which was to be kept on each test station’s PC. The operator performing the validation procedure would fill out a form on the sheet as they completed the procedure. Then, the Excel sheet would auto-fill with the results of the procedure. The sheet retained information about the previous tests as a way to keep a time log of station performance. That way, a comprehensive, station-specific log of all the stations would exist for use by the manufacturing team.
+          </p>
+
+          <h3 class="section-title" style="text-decoration:none; font-size:22px; margin-top:8px;">ECU Problem Identification</h3>
+          <p class="p">
+            In addition to the validation procedure and the work with other engineers on validating stations, I also worked with the ECU design engineers to troubleshoot problems they faced. I used an <strong>oscilloscope, power supply,</strong> and <strong>other instruments</strong> to find and assess problems they faced with the ECUs under frigid temperatures in a thermal test chamber. Since the other engineers were remote, I communicated directly with them to identify the issues.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Results</h2>
+          <ul class="bullets">
+            <li>Received <strong>Excellent</strong> performance rating - indicating all performance expectations in respect to output, quality standards, delivery of goals, and assignments were exceeded, and manager was delighted.</li>
+            <li>Created validation procedure to be repeatedly applied across <strong>50+ ECU test stations.</strong></li>
+            <li>Validation procedure was accepted and met with positive reactions by fellow engineers.</li>
+            <li>Successfully troubleshot numerous issues with early stage test stations with other engineers.</li>
+            <li>Collaborated with other engineers to find problems relating to ECUs.</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Skills</h2>
+          <ul class="bullets">
+            <li>Software (Teststand, LabVIEW)</li>
+            <li>Communication Protocols (CAN, LIN, Ethernet)</li>
+            <li>RF Signals</li>
+            <li>Hardware Test Instrumentation and Lab Testing Equipment</li>
+            <li>Electronics</li>
+            <li>Hardware</li>
+            <li>Electrical</li>
+            <li>ECUs</li>
+            <li>Collaboration</li>
+            <li>Project Management</li>
+            <li>Communication</li>
+          </ul>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>

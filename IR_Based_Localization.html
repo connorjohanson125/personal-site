@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IR Sensor and Thermocouple Based Localization — Connor Johanson</title>
+    <meta name="description" content="IR and thermocouple sensor modeling, likelihood fusion, EKF tracking, and posterior estimation for heated block localization." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Main two-column grid */
+      .grid { width: 100%; display: grid; grid-template-columns: 60% 40%; align-items: start; gap: 30px 40px; margin-top: 20px; }
+
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p{ font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets{ margin:6px 0 0 18px; padding:0; }
+      .bullets li{ list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Right column (top 3 figures) */
+      .media-col{ display:flex; flex-direction:column; gap:26px; }
+      .figure{ display:flex; flex-direction:column; gap:8px; padding:14px; }
+      .fig-caption{ text-align:center; font-family:"Marmelad",sans-serif; font-size:16px; }
+      .media-img{ width:100%; border-radius:12px; }
+
+      /* New: 2×2 gallery below grid */
+      .gallery {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+      .gallery .figure { padding: 14px; } /* reuse same look */
+
+      /* New: full-width final figure */
+      .full-figure {
+        width: 100%;
+        margin-top: 26px;
+      }
+      .full-figure .fig-caption {
+        text-align: center;
+        font-family: "Marmelad", sans-serif;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      .full-figure img {
+        width: 100%;
+        max-width: 1200px;
+        border-radius: 12px;
+        margin: 0 auto;
+        display: block;
+      }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+        .grid{ grid-template-columns:1fr; }
+        .media-col{ order:2; }
+        .gallery{ grid-template-columns: 1fr; } /* collapse gallery */
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li, .fig-caption{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">IR Sensor and Thermocouple Based Localization</h1>
+        <div class="sublead">Part of MTE 546: Multi-Sensor Data Fusion — Major Project</div>
+      </header>
+
+      <!-- MAIN (text + first 3 images on the right) -->
+      <main class="grid">
+        <!-- LEFT -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+                The purpose of this project was to localize a heated block on a square grid. The grid had a thermocouple placed at each of the 4 corners. There were 4 IR sensors of different ranges (2 short, 1 medium, 1 long) that were to be placed at a chosen distance from the grid. These sensors were to be fused to find the block position.            </p>
+            <p class="p">
+                Additionally, a moving object was to be tracked using dynamic state estimation with IR sensors alone.            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+                The first step in the project was to perform a Gaussian noise analysis and <em>fit exponential voltage-distance models</em> to the IR sensors. Histogram analysis was used to quantify the measurement noise. <em>Sensor fusion</em> was then tested using <em>inverse-variance weighted averaging</em> to estimate distance from multiple IR sensors and evaluate accuracy. The robustness of each IR sensor model was assessed under different surface angles and materials to examine generalizability. Multiple noise filtering methods (e.g. moving average, low-pass filters) were compared to select the best approach for real-time distance smoothing.            </p>
+            <p class="p">
+                Next, the thermocouples were added to help improve the localization. Models were built for the thermocouples using similar techniques.            </p>
+            <p class="p">
+                To build a probabilistic localization model, each measurement was modeled as a <em>noisy probabilistic Gaussian distribution centered at its distance estimate.</em> For each sensor type, all 4 sensor distributions were multiplied together. This resulted in 2 probabilistic likelihood maps; one for each sensor type. Finally, these 2 maps were combined and a posterior probability surface was created.            </p>
+            <p class="p">
+                A more robust method would implement <em>Bayesian fusion</em>, comparing new readings to empirically learned sensor behavior across the grid — leading to more accurate and data-adaptive localization. Training data was collected for a potential Bayesian implementation, but the method was not pursued.            </p>
+            <p class="p">
+                Finally to implement real time tracking of the object’s position, velocity, and acceleration, an <em>Extended Kalman Filter</em> was implemented. Based on the fits developed earlier, a nonlinear sensor model was built. Time-differencing was used to generate pseudo- measurements for velocity and acceleration. The Jacobian matrix was found to linearize the measurement model. The motion model was built using a constant acceleration assumption. The filter was tuned and validated using simulated trajectories of linear, nonlinear, and random motion. Initial state guesses were varied and the process and noise covariance matrices were tuned through testing. The EKF was also tested on real data, including with a tilted surface.           </p>
+            <p class="p">
+              This project was done using <strong>Matlab</strong>, <strong>Simulink</strong>, and <strong>Python</strong>.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Achieved <strong>4.4%</strong> distance average error with inverse variance weighted average compared to 5.3%, 6.3%, and 12.5% for individual sensors.</li>
+              <li>Achieved reasonable accuracy using probabilistic localization with sensor fusion.</li>
+              <li>EKF estimated final position on real data with error <strong>&lt; 5 cm.</strong></li>
+              <li>See images for project setup, EKF simulation, curve fits, and probabilistic maps.</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- RIGHT: first 3 figures only -->
+        <aside class="media-col">
+          <div class="figure">
+            <div class="fig-caption">Setup of the IR localization</div>
+            <img class="media-img" src="img/IR_Based_Localization/Setup.png" alt="Grid setup with sensors" />
+          </div>
+          <div class="figure">
+            <div class="fig-caption">Exponential Model Fit</div>
+            <img class="media-img" src="img/IR_Based_Localization/Model_Fit.png" alt="Exponential model fit curve" />
+          </div>
+          <div class="figure">
+            <div class="fig-caption">4 IR Sensor Likelihood Function Plots for (3,3) Position</div>
+            <img class="media-img" src="img/IR_Based_Localization/IR_Functions.png" alt="4 IR sensor likelihood surfaces" />
+          </div>
+        </aside>
+      </main>
+
+      <!-- NEW: 2×2 gallery (next four images) -->
+      <section class="gallery" aria-label="Posterior, fusion, and EKF figures">
+        <div class="figure">
+          <div class="fig-caption">4 Thermocouple Sensor Likelihood Function Plots for (3,3) Position</div>
+          <img class="media-img" src="img/IR_Based_Localization/Thermo_Functions.png" alt="4 thermocouple sensor likelihood surfaces" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Fused IR and Fused Thermocouple Likelihood Function Plots for (3,3) Position</div>
+          <img class="media-img" src="img/IR_Based_Localization/Fused_IR_Thermo.png" alt="Fused IR and thermocouple likelihoods" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Final Fused Posterior Likelihood Plots for (3,3) Position</div>
+          <img class="media-img" src="img/IR_Based_Localization/Final_Fused.png" alt="Final fused posterior likelihoods" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">EKF Performance on Random Simulated Motion</div>
+          <img class="media-img" src="img/IR_Based_Localization/Random_Simulated.png" alt="EKF random motion tracking" />
+        </div>
+      </section>
+
+      <!-- NEW: full-width final image -->
+      <section class="full-figure" aria-label="All positions posterior">
+        <div class="fig-caption">Fused Posterior Likelihood Plots for All Positions</div>
+        <img src="img/Projects/IR_Training.png" alt="Posterior likelihoods for all positions" />
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Software Developer in Test — Connor Johanson</title>
+    <meta name="description" content="Experience at Telus Health as a Software Developer in Test, focusing on automated regression testing and debugging using Python, Robot Framework, and Docker." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Sections */
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p { font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets { margin:6px 0 0 18px; padding:0; }
+      .bullets li { list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Software Developer in Test</h1>
+        <div class="sublead">Telus Health / Sept 2021 – Dec 2021</div>
+      </header>
+
+      <!-- CONTENT -->
+      <article>
+        <section class="section">
+          <h2 class="section-title">Responsibilities</h2>
+          <p class="p">
+            At Telus Health, I worked with the team to run tests on their health services application. These tests were crucial to ensure that the application worked as expected, bugs were fixed, and any new changes did not impact functionality. <em>I worked directly with the developers</em> to both create and debug over 100 test scripts. I collaborated with various teams to make improvements to the software.
+          </p>
+          <p class="p">
+            I was unfamiliar with <strong>Python, Robot</strong>, and <strong>Docker</strong> at the time of starting the job. I was able to very quickly adapt, learn these new skills, and apply them to become very effective at my tasks.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Results</h2>
+          <ul class="bullets">
+            <li>Received <strong>Excellent</strong> performance rating – indicating all performance expectations in respect to output, quality standards, delivery of goals, and assignments were exceeded, and manager was delighted.</li>
+            <li>Contributed to automated regression testing pipeline using <strong>Robot Framework</strong> and <strong>Docker</strong>.</li>
+            <li>Implemented over 100 test scripts.</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <h2 class="section-title">Skills</h2>
+          <ul class="bullets">
+            <li>Self-management</li>
+            <li>Python</li>
+            <li>Robot</li>
+            <li>Docker</li>
+            <li>Problem solving</li>
+            <li>Software</li>
+            <li>Debugging</li>
+            <li>Teamwork</li>
+          </ul>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>

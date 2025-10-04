@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cascaded Digital Control System for Ball-on-Beam Stabilization — Connor Johanson</title>
+    <meta name="description" content="Discrete-time control system design for ball-on-beam stabilization: modeling, linearization, IOP-based controller design, Simulink validation, and hardware results." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      /* Page wrapper */
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0px; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Grid: text left, images right */
+      .grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        align-items: start;
+        gap: 30px 40px;
+        margin-top: 20px;
+      }
+
+      /* Left column typography */
+      .section { margin-bottom: 18px; }
+      .section-title {
+        font-family: "Marmelad", sans-serif;
+        font-size: 28px;
+        font-weight: 400;
+        text-decoration: underline;
+        margin: 0 0 6px 0;
+      }
+      .p { font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; margin: 0 0 10px 0; }
+      .bullets { margin: 6px 0 0 18px; padding: 0; }
+      .bullets li { list-style: disc; margin: 4px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+
+      /* Right column media stack (plain figures) */
+      .media-col { display: flex; flex-direction: column; gap: 26px; }
+      .figure { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
+      .fig-caption { text-align: center; font-family: "Marmelad", sans-serif; font-size: 16px; }
+      .media-img { width: 100%; border-radius: 12px; }
+
+      /* Full-width bottom figure */
+      .full-figure { width: 100%; margin-top: 30px; }
+      .full-figure .fig-caption { text-align: center; font-family: "Marmelad", sans-serif; font-size: 16px; margin-bottom: 8px; }
+      .full-figure img { width: 100%; max-width: 1200px; border-radius: 12px; margin: 0 auto; display: block; }
+
+      /* Responsive tweaks */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px; }
+        .headline { font-size: 44px; }
+        .sublead { font-size: 16px; }
+        .grid { grid-template-columns: 1fr; }
+        .media-col { order: 2; }
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 18px; height: auto; margin-bottom: 25px; }
+        .headline { font-size: 38px; }
+        .sublead { font-size: 15px; }
+        .section-title { font-size: 20px; }
+        .p, .bullets li, .fig-caption { font-size: 15px; }
+        .media-img, .full-figure img { border-radius: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Cascaded Digital Control System for Ball-on-Beam Stabilization</h1>
+        <div class="sublead">Part of MTE 484: Digital Control Applications – Major Project</div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="grid">
+        <!-- Left: Text -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              In this project, a beam equipped with a resistive strip and a metal ball acted as a potentiometer. The goal was to design and implement a <em>discrete-time control system</em> to stabilize and position the ball on the beam. The system involved nonlinear coupled dynamics, and the task was to achieve real-time control through proper modeling, linearization, and feedback design. Final performance was to be tested in simulation and on the real hardware. Settling time, control effort, and error limitations were set.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              To control the ball, the nonlinear system needed to be derived and then linearized. This was done using first principles and step-response experiments. Both the inner and outer loop had nonlinearities that needed to be dealt with.
+            </p>
+            <p class="p">
+              Next, the inner loop was designed. This inner loop acted as a control system for beam angle. <em>Input-Output Parameterization (IOP)</em>, a novel method of finding controllers by treating required performance specifications as variables in an optimization problem, was used to find the controller. Discrete control techniques were also used to help with the discrepancies between continuous and discrete controllers. <em>Simulink</em> was used during controller design to validate performance.
+            </p>
+            <p class="p">
+              Upon completing the inner loop, the outer loop, representing control of the ball position on the beam, was designed. Once again, <em>Simulink</em> was used to simulate the behaviour of the system and IOP was used to design a controller meeting the required specifications.
+            </p>
+            <p class="p">
+              Once the outer loop design was done, the system was tested on the real hardware. This created various new problems. Stiction, real time shift registers, sensor calibration, non-idealities, maximum motor voltage, and sampling time were all identified as causes for differences between the simulation model in <em>Simulink</em> and the real system. These problems were dealt with by applying stiction offsets, making modest changes to the controllers, trial and error, and redesigning, as necessary.
+            </p>
+            <p class="p">This project was done using <strong>Matlab</strong> and <strong>Simulink</strong>.</p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Achieved settling time goal of <strong>7</strong> seconds</li>
+              <li>Achieved error goal with <strong>&lt; 5 mm</strong> error</li>
+              <li>Achieved control effort goal</li>
+              <li>See images for simulation and real step responses, system diagram, and Simulink model</li>
+              <li>See videos for the working system!</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- Right: Images (plain figures) -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">Simulink Block Diagram</div>
+            <img class="media-img" src="img/Ball_on_Beam_Stabilization/Simulink_Diagram.png" alt="Simulink block diagram for ball-on-beam control" />
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">Real Step Response</div>
+            <img class="media-img" src="img/Ball_on_Beam_Stabilization/Real_Step_Response.png" alt="Real system step response plot" />
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">Simulated Step Response</div>
+            <img class="media-img" src="img/Ball_on_Beam_Stabilization/Simulated_Step_Response.png" alt="Simulated step response plot" />
+          </div>
+
+          
+        </aside>
+      </main>
+
+      <!-- Full-width bottom figure -->
+      <section class="full-figure" aria-label="Full system block diagram">
+        <div class="fig-caption">Full Control System Block Diagram</div>
+        <img src="img/Projects/Control_Diagram.png" alt="Full control system block diagram for ball-on-beam project" />
+
+        <div class="figure">
+            <div class="fig-caption">Controlling to a Commanded Position</div>
+            <video class="media-img" autoplay muted loop playsinline controls>
+              <source src="img/Ball_on_Beam_Stabilization/Position_Control.mp4" alt="Controlling to a Commanded Position" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">Rejecting Disturbances</div>
+            <video class="media-img" autoplay muted loop playsinline controls>
+              <source src="img/Ball_on_Beam_Stabilization/Disturbance_Rejection.mp4" alt="Rejecting Disturbances" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+      </section>
+    </div>
+  </body>
+</html>

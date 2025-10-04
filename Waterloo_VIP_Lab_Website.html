@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Waterloo VIP Lab Website (vip.uwaterloo.ca) — Connor Johanson</title>
+    <meta name="description" content="My co-op task: built a fully automated website for the University of Waterloo Vision and Image Processing Lab (VIP), eliminating manual profile/paper updates and reducing upkeep." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      /* Page wrapper */
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0px; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+      .inline-link { text-decoration: underline; } /* to match the underlined link in your mock */
+
+      /* Grid: text left, images right */
+      .grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        align-items: start;
+        gap: 30px 40px;
+        margin-top: 20px;
+      }
+
+      /* Left column typography */
+      .section { margin-bottom: 18px; }
+      .section-title {
+        font-family: "Marmelad", sans-serif;
+        font-size: 28px;
+        font-weight: 400;
+        text-decoration: underline;
+        margin: 0 0 6px 0;
+      }
+      .p { font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; margin: 0 0 10px 0; }
+      .bullets { margin: 6px 0 0 18px; padding: 0; }
+      .bullets li { list-style: disc; margin: 4px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+
+      /* Right column media stack */
+      .media-col { display: flex; flex-direction: column; gap: 26px; }
+      .figure { display: flex; flex-direction: column; gap: 8px; padding: 14px; }
+      .fig-caption { text-align: center; font-family: "Marmelad", sans-serif; font-size: 16px; }
+      .media-img { width: 100%; border-radius: 12px; }
+      .media-card { background: var(--card); border-radius: var(--r-lg); }
+
+      /* Responsive tweaks */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px; }
+        .headline { font-size: 44px; }
+        .sublead { font-size: 16px; }
+        .grid { grid-template-columns: 1fr; }
+        .media-col { order: 2; }
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 18px; height: auto; margin-bottom: 25px; }
+        .headline { font-size: 38px; }
+        .sublead { font-size: 15px; }
+        .section-title { font-size: 20px; }
+        .p, .bullets li, .fig-caption { font-size: 15px; }
+        .media-card { border-radius: 24px; }
+        .media-img { border-radius: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Waterloo VIP Lab Website (vip.uwaterloo.ca)</h1>
+        <div class="sublead">
+          <a class="inline-link" href="Web_Developer.html" target="_blank" rel="noopener">
+            My Co-op Task for the University of Waterloo Vision and Image Processing Lab
+          </a>
+        </div>
+      </header>
+
+      <!-- MAIN -->
+      <main class="grid">
+        <!-- Left: Text -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              I was tasked with updating the VIP Lab’s website so that the members would not need to update their profiles with new papers, upload copies of the new papers, and maintain a list of their students. I was also given various smaller goals like new features, pages, and automation.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              Upon investigation into the problem, I determined it was only possible to achieve all the goals if I created an entirely new site from the ground up. This was because the University did not allow any of the necessary programming on its existing pages.
+            </p>
+            <p class="p">
+              I used <strong>Wordpress, CSS, HTML, PHP, and JavaScript</strong> to create the site. I implemented all the basic information and pages manually. Then, I used the built in functionality of Wordpress to allow for linking students to professors and other members. Next, using PHP and JavaScript in conjunction with a <strong>Scopus API</strong> provided to me, I was able to automatically update all scholarly information on each members page. I wrote code that queried the API daily for all publication information and updated the pages accordingly. To automatically link the articles and papers, I used the <strong>Open Access Button API</strong>, which provides PDFs of most papers.
+            </p>
+            <p class="p">
+              I retroactively made changes to the site as requested. I tested edge cases and created solutions to problems like missing pages, no API data, or missing papers.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>See the site in action <a class="inline-link" href="https://vip.uwaterloo.ca" target="_blank" rel="noopener">here!</a></li>
+              <li>To this day, the site is fully functioning with little maintenance required. Almost all maintenance has been done by people who only had access to my simple site guide.</li>
+              <li>Fully autonomous publication updates to profiles.</li>
+              <li>Automatic linking of papers without need for uploads.</li>
+              <li>Full linking of site between pages, profiles, students, professors, etc.</li>
+              <li>Significantly reduced upkeep for lab by completely eliminating need for paper uploads, linking authors, manual changes, and more.</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- Right: Images with captions -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">Website Front Page</div>
+            <img class="media-img" src="img/Projects/VIP_Lab.png" alt="VIP Lab website front page screenshot" />
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">Website Demo</div>
+            <video class="media-img" autoplay muted loop playsinline controls>
+              <source src="img/Waterloo_VIP_Lab_Website/Demo.mp4" alt="Website Demo" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

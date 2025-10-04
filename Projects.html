@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects — Connor Johanson</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #f1e8d7;
+        --card: #ebdcc0;
+        --ink: #000;
+        --r-lg: 50px;
+        --r-md: 12px;
+        --gap: 20px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid rgba(120,120,220,1); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* NAV — standard like the latest pages */
+      .navbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 30px;
+        width: 100%;
+        margin-bottom: 0; /* remove negative margin that shrank hit-area */
+      }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* ===== Header (two rows, same as Experience) ===== */
+      .header { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: -20px; } /* slight lift so title/image don't drop */
+      .header-top { display: flex; flex-wrap: nowrap; align-items: center; gap: 10px; width: 100%; }
+
+      .headline {
+        flex: 1 1 auto; min-width: 0; margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1;
+      }
+      .headline .span { font-size: 64px; font-weight: 400; }
+
+      /* Projects “logo” — identical behavior/size to Experience gif */
+      .hero-icon { flex: 0 0 auto; width: min(180px, 25vw); height: auto; object-fit: cover; }
+
+      /* Row 2: full-width intro paragraph — same type as Experience */
+      .lead {
+        display: block; font-family: "Marmelad", sans-serif; font-size: 20px; color: var(--ink); line-height: 1.45; margin-top: 0; max-width: 100%;
+      }
+
+      /* Grid of cards */
+      .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 50px 20px; width: 100%; }
+
+      /* Card — text (left) + image (right) */
+      .card {
+        display: grid;
+        grid-template-columns: minmax(55%, 1fr) minmax(0, 45%);
+        align-items: start;
+        gap: 15px;
+        padding: 20px 25px;
+        background: var(--card);
+        border-radius: var(--r-lg);
+        overflow: hidden;
+      }
+      .card > * { min-width: 0; }
+
+      /* Left column (title + bullets) — standardized to Experience */
+      .p { margin: 0; font-family: "Marmelad", sans-serif; font-size: 20px; line-height: 1.45; }
+      .text-wrapper-6 { display: block; font-family: "Marmelad", sans-serif; font-size: 28px; text-decoration: underline; margin-bottom: 6px; }
+      .bullets { margin: 6px 0 0 18px; padding: 0; }
+      .bullets li { list-style: disc; margin: 4px 0; font-family: "Marmelad", sans-serif; font-size: 16px; line-height: 1.45; }
+
+      /* Right column (image) */
+      .media { justify-self: end; width: 100%; max-width: 350px; margin-left: auto; }
+      .media img { width: 100%; height: auto; border-radius: var(--r-md); object-fit: cover; }
+
+      /* Aspect helpers (optional) */
+      .IMG { aspect-ratio: 0.8; }
+      .rally-and-rehab { aspect-ratio: 1.34; }
+      .rawdataexample { aspect-ratio: 2.49; }
+      .img { aspect-ratio: 1.33; }
+      .img-2 { aspect-ratio: 1.09; }
+      .screenshot { aspect-ratio: 2.1; }
+      .screenshot-2 { aspect-ratio: 1.23; }
+      .screenshot-3 { aspect-ratio: 1.25; }
+      .screenshot-4 { aspect-ratio: 1.77; }
+      .q-x { aspect-ratio: 1.45; }
+      .untitled { aspect-ratio: 1.36; }
+
+      /* Responsive tweaks — mirror Experience */
+      @media (max-width: 900px) {
+        .desktop { padding: 20px 32px; }
+        .headline .span { font-size: 44px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 28px; }
+        .card { grid-template-columns: 1fr; }
+        .media { justify-self: start; width: 100%; max-width: 420px; margin-left: 0; }
+        .p, .bullets li { font-size: 16px; }
+        .text-wrapper-6 { font-size: 24px; }
+        /* optional: pull the lead up a touch to match your Experience feel */
+        .lead { margin-top: -30px; }
+      }
+      @media (max-width: 640px) {
+        .desktop { padding: 20px; }
+        .navbar { gap: 16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size: 18px; height: auto; margin-bottom: 25px; }
+        .headline .span { font-size: 38px; }
+        .lead { font-size: 15px; margin-top: -10px; }
+        .card { border-radius: 24px; }
+        .p, .bullets li { font-size: 15px; }
+        .text-wrapper-6 { font-size: 20px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER (title + logo on first row; full-width lead on second row) -->
+      <div class="header">
+        <div class="header-top">
+          <p class="headline"><span class="span">My Projects</span></p>
+          <img class="hero-icon" src="img/Projects/Projects_GIF.gif" alt="Technology animation" />
+        </div>
+        <span class="lead">
+          Throughout work, school, and my general life, I have completed numerous engineering-related projects. I
+          have included here some that I found most interesting. These projects include aspects of <strong>controls, software,
+          hardware, machine learning, sensor data fusion, data analysis, and project management</strong>. Each project is
+          briefly outlined below. <strong>Click the titles to read more!</strong>
+        </span>
+      </div>
+
+      <!-- ===== Rows of cards ===== -->
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="EmRG_Positioner.html"><span class="text-wrapper-6">EmRG Dual Axis Antenna Positioner</span></a>
+            <ul class="bullets">
+              <li>Built to help position radio system antennae under test</li>
+              <li>Achieved precise azimuth and elevation adjustments, high weight capacity, and comparable performance to commercial positioners for &lt;10% of the price</li>
+              <li><strong>Software (Matlab), Hardware, Project Management</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="IMG" src="img/Projects/Positioner.jpeg" alt="Antenna positioner" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Rally_And_Rehab.html"><span class="text-wrapper-6">Rally and Rehab (Capstone Project)</span></a>
+            <ul class="bullets">
+              <li>Designed and prototyped a sleeve embedded with sensors to provide racket sport-specific biomechanical analysis</li>
+              <li>Team leader of the award-winning project</li>
+              <li><strong>Software (Python), Hardware, Project Management, Sensor Data Fusion, Data Analysis</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="rally-and-rehab" src="img/Projects/Rally_and_Rehab.png" alt="Rally and Rehab sleeve" /></div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Doppler_Speed_Estimation.html"><span class="text-wrapper-6">Doppler-Based Vehicle Speed Estimation</span></a>
+            <ul class="bullets">
+              <li>Implemented and compared an Unscented Kalman Filter and a Convolutional Neural Network for vehicle speed estimation based on the Doppler effect</li>
+              <li>Achieved &lt;2.7 km/h average error with CNN</li>
+              <li><strong>Software (Matlab, Python), Machine Learning, Data Fusion</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="rawdataexample" src="img/Projects/Doppler_Data.png" alt="Raw data example" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Line_Following_Robot.html"><span class="text-wrapper-6">Line-Following Rescue Robot</span></a>
+            <ul class="bullets">
+              <li>Designed and built a fully autonomous robot to navigate a course, pick up a Lego character, and return to the start</li>
+              <li>Team leader of successful project</li>
+              <li><strong>Software (C++), Hardware, Project Management, Controls, Sensor Data Fusion</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="img" src="img/Projects/Line_Following_Robot.JPG" alt="Line-following robot" /></div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="IR_Based_Localization.html"><span class="text-wrapper-6">IR Sensor and Thermocouple Based Localization</span></a>
+            <ul class="bullets">
+              <li>Modeled sensors with Gaussian noise analysis</li>
+              <li>Used sensor fusion to combine probabilistic Gaussian distributions to localize heated block</li>
+              <li>Implemented EKF to track object motion in real time with &lt;5% error</li>
+              <li><strong>Software (Matlab, Simulink), Data Fusion</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="img-2" src="img/Projects/IR_Training.png" alt="Localization plots" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Ball_on_Beam_Stabilization.html"><span class="text-wrapper-6">Cascaded Digital Control System for Ball-on-Beam Stabilization</span></a>
+            <ul class="bullets">
+              <li>Applied discrete control techniques to create a cascaded digital control system</li>
+              <li>Modeled nonlinear behaviour and accounted for stiction, shift-registers, and sensor calibration</li>
+              <li><strong>Software (Matlab, Simulink), Controls</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="screenshot" src="img/Projects/Control_Diagram.png" alt="Ball-on-beam plots" /></div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="ANN_Wind_Turbine.html"><span class="text-wrapper-6">ANN for Wind Turbine Fault Detection</span></a>
+            <ul class="bullets">
+              <li>Built 2 ANNs for 2 accelerometer data points</li>
+              <li>Tested different normalization methods, architecture, and activation functions</li>
+              <li>Applied sensor fusion to achieve 97% accuracy</li>
+              <li><strong>Software (Python), Data Fusion, Machine Learning</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="screenshot-2" src="img/Projects/ANN_Training.png" alt="ANN results" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Multivariable_Control_Pendulum.html"><span class="text-wrapper-6">Multivariable Control of a 2-Rod Inverted Pendulum</span></a>
+            <ul class="bullets">
+              <li>Implemented both MIMO and SISO control techniques</li>
+              <li>Applied Youla Parameterization, PID control, plant approximation, plain-state feedback, and state-space methods</li>
+              <li><strong>Software (Matlab), Controls</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="screenshot-3" src="img/Projects/Inverted_Pend_Step.png" alt="Inverted pendulum charts" /></div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Waterloo_VIP_Lab_Website.html"><span class="text-wrapper-6">Waterloo VIP Lab Website</span></a>
+            <ul class="bullets">
+              <li>Built entire website for VIP Lab ensuring easy upkeep</li>
+              <li>Implemented fully autonomous updates to personal pages by pulling scholar data from Scopus API</li>
+              <li>Automatically linked open access papers using an API</li>
+              <li><strong>Software (CSS, HTML, PHP, JS), Project Management</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="screenshot-4" src="img/Projects/VIP_Lab.png" alt="VIP Lab website screenshot" /></div>
+        </article>
+
+        <article class="card">
+          <div class="p">
+            <a href="Nonlinear_Spacecraft_Navigation.html"><span class="text-wrapper-6">Nonlinear Spacecraft Navigation State Estimation</span></a>
+            <ul class="bullets">
+              <li>Implemented an EKF for a 7-state vector using noisy measurements and probabilistic event-driven disturbances</li>
+              <li>Derived nonlinear models; tried constant and time-decaying, event-based noise matrices</li>
+              <li><strong>Software (Matlab), Data Fusion</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="q-x" src="img/Projects/Spacecraft_State.jpg" alt="Spacecraft state estimation" /></div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="card">
+          <div class="p">
+            <a href="Pressure_Sensor_Model.html"><span class="text-wrapper-6">Pressure Sensor Model Design and Validation</span></a>
+            <ul class="bullets">
+              <li>Designed a 2nd-order linear regression model</li>
+              <li>Applied various filters to reduce noise; evaluated various regressors</li>
+              <li>Achieved R² = 0.96, RMSE = 0.005; tested robustness with bootstrapping</li>
+              <li><strong>Software (Matlab), Data Analysis, Machine Learning</strong></li>
+            </ul>
+          </div>
+          <div class="media"><img class="untitled" src="img/Projects/Pressure_Sensor_Model.png" alt="Pressure sensor model results" /></div>
+        </article>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Line–Following Rescue Robot — Connor Johanson</title>
+    <meta name="description" content="Fully autonomous line-following rescue robot: design, sensing, PID control, hardware integration, and results." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img, video { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Grid (text + right images) */
+      .grid { width: 100%; display: grid; grid-template-columns: 60% 40%; align-items: start; gap: 30px 40px; margin-top: 20px; }
+
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p{ font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets{ margin:6px 0 0 18px; padding:0; }
+      .bullets li{ list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      .media-col{ display:flex; flex-direction:column; gap:26px; }
+      .figure{ display:flex; flex-direction:column; gap:8px; padding:14px; }
+      .fig-caption{ text-align:center; font-family:"Marmelad",sans-serif; font-size:16px; }
+      .media-img{ width:100%; border-radius:12px; }
+      .media-video{ width:100%; border-radius:12px; background:#000; }
+
+      /* Bottom 2-column row (third photo + video) */
+      .media-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+      .media-row .figure { padding:14px; }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+        .grid{ grid-template-columns:1fr; }
+        .media-col{ order:2; }
+        .media-row{ grid-template-columns: 1fr; } /* stack image then video */
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li, .fig-caption{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Line–Following Rescue Robot</h1>
+        <div class="sublead">Part of MTE 380: Mechatronics Engineering Design Workshop – Major Project</div>
+      </header>
+
+      <!-- MAIN (text + two images on the right) -->
+      <main class="grid">
+        <!-- LEFT -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              The goal of this project was to design and build a fully autonomous robot to navigate a complex course by following a tape line. The robot was to detect and pick up a Lego character and then return it to the start. There were time, cost, and size constraints.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              I was the <strong>group leader</strong> and <strong>project manager</strong> for this venture.
+            </p>
+            <p class="p">
+              The mechanical design of the robot included a 3D printed chassis with a battery housed over the drive wheels for improved traction. The claw mechanism was driven by a servomotor and gear pair. The lightweight, 3-wheel design allowed for differential steering.
+            </p>
+            <p class="p">
+              Two RGB sensors were used for colour-based line following and target detection. An <em>STM32 microcontroller</em> was integrated with a dual H-bridge motor driver for <em>PWM-based speed control and differential steering</em>. An 11.1V LiPo battery was stepped down with a voltage regulator and used to power the robot.
+            </p>
+            <p class="p">
+              <em>PID controls</em> were used to follow the line. The goal of the control system was to keep the difference between the RGB sensor readings at 0. This meant that the robot was straddling the line perfectly. Any differences in readings were used to dynamically adjust individual motor speeds. A claw control sequence was also developed to grasp upon detection and release at the end of the run.
+            </p>
+            <p class="p">
+              Significant iteration and design review was performed. The claw geometry needed to be fully redesigned to improve grabbing ability. The sensors were repositioned numerous times and LED lighting was added to improve reading consistency. Rear weights were added to fix wheel lift and traction issues that were preventing the robot from traversing the course fully. The PID control gains were adjusted to optimize for the course.
+            </p>
+            <p class="p">
+              This project was done using <strong>C++</strong> and <strong>SolidWorks</strong>.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Successfully completed a trial run</li>
+              <li>Met 8” x 8” x 8” size constraint</li>
+              <li>Met $150 cost constraint with a cost of <strong>$139</strong></li>
+              <li>Met 2 minute time constraint with final time of <strong>65 seconds</strong></li>
+              <li>Analyzed project and decided on future improvements</li>
+              <li>See video for the robot completing the course!</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- RIGHT: first two figures -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">Track to be Traversed</div>
+            <img class="media-img" src="img/Line_Following_Robot/Track.png" alt="The taped course to be traversed by the robot" />
+          </div>
+
+          <div class="figure">
+            <div class="fig-caption">Front View of Final Robot</div>
+            <img class="media-img" src="img/Line_Following_Robot/Robot.JPG" alt="Front view of the final robot" />
+          </div>
+        </aside>
+      </main>
+
+      <!-- BOTTOM ROW: third photo (left) + video (right) -->
+      <section class="media-row" aria-label="Robot side view and run video">
+        <div class="figure">
+          <div class="fig-caption">Side View of Final Robot</div>
+          <img class="media-img" src="img/Projects/Line_Following_Robot.JPG" alt="Side view of the final robot" />
+        </div>
+
+        <div class="figure">
+          <div class="fig-caption">Course Run (Video)</div>
+          <video class="media-video" autoplay muted loop playsinline controls>
+            <source src="img/Line_Following_Robot/Run.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <!-- If you want it to behave like a GIF, swap 'controls' for: autoplay muted loop playsinline -->
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rally and Rehab (Capstone Project) — Connor Johanson</title>
+    <meta name="description" content="Compression sleeve with embedded IMUs for racket-sport biomechanics feedback — sensing, filters, BLE, dashboard, and prototype results." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Marmelad&family=Murecho:wght@100..900&display=swap" rel="stylesheet" />
+
+    <style>
+      :root { --bg:#f1e8d7; --card:#ebdcc0; --ink:#000000; --r-lg:50px; --r-md:12px; --gap:20px; }
+
+      *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+      html, body { height: 100%; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Murecho", sans-serif; }
+      a { color: inherit; text-decoration: none; }
+      img, video, iframe { display: block; max-width: 100%; height: auto; }
+      :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+      .desktop { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); padding: 20px 65px; min-height: 100vh; background: var(--bg); }
+
+      /* Nav */
+      .navbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px; width: 100%; margin-bottom: 0; }
+      .text-wrapper, .div, .text-wrapper-2, .text-wrapper-3 {
+        height: 55px; display: flex; align-items: center; font-weight: 400; color: var(--ink);
+        font-size: 30px; text-decoration: underline;
+      }
+
+      /* Header */
+      .header { display: flex; flex-direction: column; gap: 4px; width: 100%; margin-top: 0; }
+      .headline { margin: 0; font-weight: 400; color: var(--ink); font-size: 64px; line-height: 1.1; }
+      .sublead { font-family: "Marmelad", sans-serif; font-size: 18px; line-height: 1.45; margin-top: 4px; }
+
+      /* Main grid: text left, media right */
+      .grid { width: 100%; display: grid; grid-template-columns: 60% 40%; align-items: start; gap: 30px 40px; margin-top: 20px; }
+
+      /* Left column type */
+      .section { margin-bottom: 18px; }
+      .section-title { font-family:"Marmelad",sans-serif; font-size:28px; font-weight:400; text-decoration:underline; margin:0 0 6px 0; }
+      .p{ font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; margin:0 0 10px 0; }
+      .bullets{ margin:6px 0 0 18px; padding:0; }
+      .bullets li{ list-style:disc; margin:4px 0; font-family:"Marmelad",sans-serif; font-size:16px; line-height:1.45; }
+
+      /* Right column media stack */
+      .media-col{ display:flex; flex-direction:column; gap:26px; }
+      .figure{ display:flex; flex-direction:column; gap:8px; padding:14px; }
+      .fig-caption{ text-align:center; font-family:"Marmelad",sans-serif; font-size:16px; }
+      .media-img{ width:100%; border-radius:12px; }
+      .media-video{ width:100%; border-radius:12px; background:#000; }
+
+      /* YouTube embed */
+      .yt-embed {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border: 0;
+        border-radius: 12px;
+        background: #000;
+      }
+
+      /* PDF embed */
+      .doc-embed {
+        width: 100%;
+        height: 80vh;
+        border: 0;
+        border-radius: 12px;
+        background: #fff;
+      }
+      .doc-link { text-align:center; font-family:"Marmelad",sans-serif; font-size:15px; margin-top:4px; }
+
+      /* Full-width 2×2 gallery */
+      .gallery {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+      .gallery .figure { padding:14px; }
+
+      /* Bottom 2-column media row */
+      .media-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px;
+        margin-top: 10px;
+      }
+
+      /* Responsive */
+      @media (max-width:900px){
+        .desktop{ padding:20px 32px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3 { font-size:28px; }
+        .headline{ font-size:44px; }
+        .sublead{ font-size:16px; }
+        .grid{ grid-template-columns:1fr; }
+        .media-col{ order:2; }
+        .gallery, .media-row{ grid-template-columns:1fr; }
+      }
+      @media (max-width:640px){
+        .desktop{ padding:20px; }
+        .navbar{ gap:16px; }
+        .navbar .text-wrapper, .navbar .div, .navbar .text-wrapper-2, .navbar .text-wrapper-3{ font-size:18px; height:auto; margin-bottom:25px; }
+        .headline{ font-size:38px; }
+        .sublead{ font-size:15px; }
+        .section-title{ font-size:20px; }
+        .p, .bullets li, .fig-caption{ font-size:15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="desktop">
+      <!-- NAV -->
+      <nav class="navbar" aria-label="Primary">
+        <a href="About.html"><div class="text-wrapper">About</div></a>
+        <a href="Projects.html"><div class="div">Projects</div></a>
+        <a href="Experience.html"><div class="text-wrapper-2">Experience</div></a>
+        <a href="Contact.html"><div class="text-wrapper-3">Contact</div></a>
+      </nav>
+
+      <!-- HEADER -->
+      <header class="header">
+        <h1 class="headline">Rally and Rehab (Capstone Project)</h1>
+        <div class="sublead">Part of MTE 482: Mechatronics Engineering Project – Major Project</div>
+      </header>
+
+      <!-- MAIN GRID -->
+      <main class="grid">
+        <!-- LEFT: Text -->
+        <article>
+          <section class="section">
+            <h2 class="section-title">Goal</h2>
+            <p class="p">
+              The goal of this project was to design and prototype a compression sleeve embedded with sensors to provide sport-specific biomechanical feedback for amateur racket sport athletes. It should provide actionable insights for performance improvement, injury prevention, and rehabilitation. Further, the device needed to be comfortable, accurate, cheap, and have a long battery life.
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Method</h2>
+            <p class="p">
+              I was the <strong>group leader</strong> and <strong>project manager</strong> for this venture.
+            </p>
+            <p class="p">
+              The sleeve is made of a lightweight and flexible nylon spandex material. All hardware is housed within 3D-printed ABS shells which were designed to be small, lightweight, and have minimal impact on the player. The shells are attached to the sleeve using both adhesive and sewed-on straps. The battery is a 1600 mAh LiPo. All IMUs are very low power.
+            </p>
+            <p class="p">
+              The hardware and sensor components of the sleeve consist of <em>3 IMUs (BMI270)</em> fitted at the shoulder, elbow, and wrist. These sensors track linear acceleration and angular velocity at each joint. These IMUs are interfaced with an <em>ESP32 microcontroller</em> board using 2 different <em>I2C channels</em>. Upon data collection, the microcontroller sorts the data into packets, formats the data into a JSON, and begins <em>advertising via Bluetooth Low Energy</em>. BLE was used to minimize the size of the required battery on the device.
+            </p>
+            <p class="p">
+              The other device connects to the microcontroller via BLE and receives the data using a <em>Python script</em>. Upon reception, the data is transformed as necessary. <em>6 live Kalman Filters</em> that track the velocity, position, and acceleration in each direction are used to reduce noise and improve the estimate. The sensor noise covariance matrices were found through analyzing sensor noise at rest and the process noise covariance matrices were determined through trial and error. <em>Feature extraction</em> is performed based on published data on injurious swings in racket sports. Swing count is updated based on specific thresholds in each sensor. Other metrics are recorded, as necessary. The data is then displayed live on a locally hosted dashboard built using <em>Plotly Dash</em>. The data is also sent to an InfluxDB cloud for long term storage and historical metrics. These metrics are displayed in a separate tab where users can search for and review their old training sessions. There is also a tab displaying lifetime stats for the user.
+            </p>
+            <p class="p">
+              This project was done using <strong>Python, C++, Solidworks, HTML,</strong> and <strong>InfluxDB.</strong>
+            </p>
+          </section>
+
+          <section class="section">
+            <h2 class="section-title">Results</h2>
+            <ul class="bullets">
+              <li>Awarded <strong>James Baleshta Special Merit Award</strong></li>
+              <li>Nominated for <strong>Best Prototype Award</strong></li>
+              <li>Highly accurate at swing detection and ignoring non-swings</li>
+              <li><strong>3</strong> hours battery life</li>
+              <li><strong>$252</strong> total cost</li>
+              <li>Adjustable to both left- and right-handed players</li>
+              <li>Live feed and historical metrics for player</li>
+              <li>Developed and implemented injury risk metric</li>
+              <li>See images for the poster, prototype, diagrams, and live feed!</li>
+              <li>See the video link for the prototype in action!</li>
+              <li>See the attached project final report!</li>
+            </ul>
+          </section>
+        </article>
+
+        <!-- RIGHT: Poster + Prototype -->
+        <aside class="media-col" aria-label="Project figures">
+          <div class="figure">
+            <div class="fig-caption">Our Poster</div>
+            <img class="media-img" src="img/Rally_And_Rehab/Poster.png" alt="Rally & Rehab project poster" />
+          </div>
+          <div class="figure">
+            <div class="fig-caption">Prototype</div>
+            <img class="media-img" src="img/Rally_And_Rehab/Prototype.png" alt="Prototype compression sleeve with embedded sensors" />
+          </div>
+          <div class="figure">
+            <div class="fig-caption">System Diagram</div>
+            <img class="media-img" src="img/Rally_And_Rehab/System_Diagram.png" alt="System diagram for the Rally & Rehab sleeve and data flow" />
+          </div>
+        </aside>
+      </main>
+
+      <!-- FULL-WIDTH 2×2 GALLERY -->
+      <section class="gallery" aria-label="System and UI screenshots">
+        <div class="figure">
+          <div class="fig-caption">James Baleshta Special Merit Award</div>
+          <img class="media-img" src="img/Rally_And_Rehab/Award.jpg" alt="Winners of James Baleshta Special Merit Award" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Hardware Diagram</div>
+          <img class="media-img" src="img/Rally_And_Rehab/Hardware.png" alt="Hardware wiring/PCB diagram" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Main Page</div>
+          <img class="media-img" src="img/Rally_And_Rehab/Main_Screen.png" alt="Plotly/InfluxDB dashboard main page" />
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Sessions Tab</div>
+          <img class="media-img" src="img/Rally_And_Rehab/Sessions_Tab.png" alt="Sessions listing / historical metrics tab" />
+        </div>
+      </section>
+
+      <!-- BOTTOM: YouTube + Report -->
+      <section class="media-row" aria-label="Video and Report">
+        <div class="figure">
+          <div class="fig-caption">Prototype Demo (YouTube)</div>
+          <iframe class="yt-embed"
+            src="https://www.youtube.com/embed/qPz54JcES9k?si=rTBKH2780F1bquko"
+            title="Rally & Rehab Prototype Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <div class="figure">
+          <div class="fig-caption">Final Report (PDF)</div>
+          <iframe class="doc-embed" src="img/Rally_And_Rehab/Final_Report.pdf" title="Rally & Rehab Final Report PDF"></iframe>
+          <p class="doc-link">
+            <a href="img/Rally_And_Rehab/Final_Report.pdf" target="_blank" rel="noopener" style="text-decoration: underline;">Open Fullscreen / Download PDF</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
